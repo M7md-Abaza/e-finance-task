@@ -43,20 +43,14 @@ sealed class NetworkState {
                     showHelperDialog(
                         msg = if (msg.isNullOrEmpty()) mContext.getString(R.string.x_api_key_error) else msg!!,
                         mContext = mContext,
-                        mDialogsListener = {
-//                            BaseViewModel.signOut(mContext)
-//                            BaseViewModel.startAuth(mContext)
-                        }
+                        mDialogsListener = mDialogsListener
                     )
                 }
                 Constants.Codes.AUTH_CODE -> {
                     showHelperDialog(
                         msg = mContext.getString(R.string.auth_error),
                         mContext = mContext,
-                        mDialogsListener = {
-//                            BaseViewModel.signOut(mContext)
-//                            BaseViewModel.startAuth(mContext)
-                        }
+                        mDialogsListener = mDialogsListener
                     )
                 }
                 else -> {

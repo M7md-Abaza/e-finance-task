@@ -8,14 +8,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.m7mdabaza.domain.entities.transactionHistory.TransactionsHistory
-import com.m7mdabaza.domain.entities.payment.PaymentRequest
 import com.m7mdabaza.efinancetask.R
 import com.m7mdabaza.efinancetask.base.BaseFragment
 import com.m7mdabaza.efinancetask.base.HelperDialog
 import com.m7mdabaza.efinancetask.databinding.FragmentConfirmPaymentBinding
 import com.m7mdabaza.efinancetask.ui.screens.MainActivity
 import com.m7mdabaza.efinancetask.ui.viewmodels.PaymentViewModel
+import com.m7mdabaza.efinancetask.utils.Constants
 import com.m7mdabaza.efinancetask.utils.NetworkState
+import com.m7mdabaza.efinancetask.utils.Utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -74,16 +75,14 @@ class ConfirmPaymentFragment : BaseFragment() {
                 getString(
                     R.string.are_you_sure_you_want_to_pay_l_e,
                     binding.etAmount.text.toString()
-                ))
+                )
+            )
         dialog.setOnConfirmClickListener { confirmPayment() }
         dialog.show(mFragmentManager, null)
     }
 
     private fun confirmPayment() {
-        val paymentRequest = PaymentRequest(
-            amount = binding.etAmount.text.toString().toDouble()
-        )
-        viewModel.confirmPayment(paymentRequest)
+        viewModel.confirmPayment()
     }
 
     private fun observe() {
@@ -101,14 +100,11 @@ class ConfirmPaymentFragment : BaseFragment() {
                     is NetworkState.Error -> {
                         visProgress(false)
                         handleSuccess()
-//                        it.handleErrors(mContext, null)
                     }
 
                     is NetworkState.Result<*> -> {
                         visProgress(false)
                         handleSuccess()
-//                        handleResult(it.response as PaymentResponse)
-
                     }
                 }
 

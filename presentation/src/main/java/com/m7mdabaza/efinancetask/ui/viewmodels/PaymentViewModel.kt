@@ -1,9 +1,7 @@
 package com.m7mdabaza.efinancetask.ui.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.m7mdabaza.domain.entities.transactionHistory.TransactionsHistory
-import com.m7mdabaza.domain.entities.payment.PaymentRequest
 import com.m7mdabaza.domain.usecases.InsertTransactionUseCase
 import com.m7mdabaza.domain.usecases.PaymentUseCase
 import com.m7mdabaza.efinancetask.base.BaseViewModel
@@ -27,13 +25,13 @@ class PaymentViewModel @Inject constructor(
     private val _insertTransaction = SingleLiveEvent<Boolean>()
     val insertTransaction: SingleLiveEvent<Boolean> get() = _insertTransaction
 
-    fun confirmPayment(paymentRequest: PaymentRequest) {
+    fun confirmPayment() {
         _confirmPayment.value = NetworkState.Loading
 
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 try {
-                    runApi(_confirmPayment, paymentUseCase.confirmPayment(paymentRequest))
+                    runApi(_confirmPayment, paymentUseCase.confirmPayment())
                 } catch (e: Exception) {
                     _confirmPayment.postValue(NetworkState.Error(401))
                 }
